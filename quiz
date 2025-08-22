@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Would You Rather ❤️</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: black url("https://i.ibb.co/NgZd1DTv/bg-couple-jpg.jpg") no-repeat center center;
+      background-size: contain;   /* show full image, no crop */
+      background-attachment: fixed;
+      background-color: black;    /* fill empty space */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      margin: 0;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 400px;
+      animation: fadeIn 0.5s ease;
+    }
+
+    h2 { font-size: 1.2rem; margin-bottom: 20px; color: #333; }
+
+    button {
+      background: #ec4899;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 14px 20px;
+      margin: 10px 0;
+      font-size: 1rem;
+      width: 100%;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    button:hover { background: #db2777; }
+
+    #response { margin-top: 15px; font-size: 1rem; color: #444; }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(10px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2 id="question">Would you rather…?</h2>
+    <button id="btn1" onclick="choose(1)">Option 1</button>
+    <button id="btn2" onclick="choose(2)">Option 2</button>
+    <p id="response"></p>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        q: "Would you rather stay up all night and watch me sleep 💤 or let me talk all night and make u be awake 🗣️?",
+        a1: "Watch me sleep 👀",
+        a2: "Let me talk 🗣️",
+        r1: "Ashoo ur admiring me when I sleep 😴 ah but ik u want to escape my blabbering nd chose this 🤭",
+        r2: "What ra 😂 u are ready to lose ur sleep pola "
+      },
+      {
+        q: "Would you rather lose every photo nd video of us 📸🎥 or lose every gift we have given each other 🎁?",
+        a1: "Lose photos nd videos 🖼️",
+        a2: "Lose gifts 🎁",
+        r1: "Well I agree too, cus we live together to create memories 💕 we don’t need photos nd videos to remind us 🥰",
+        r2: "Nane oru periya gift 🎁 unaku tht itself will always be there ❤️"
+      },
+      {
+        q: "Would you rather predict everything that I’m thinking 🧠 or be able to remember every conversation that we had 💬?",
+        a1: "Thinking 🤔",
+        a2: "Conversation 📝",
+        r1: "Life would be so much easier for u that way la 😌",
+        r2: "Correct cus u have part time memory loss 😂"
+      },
+      {
+        q: "Would you let me steal ur bedsheet when ur asleep 🛏️ or let me kick u accidentally when we are asleep ?",
+        a1: "Steal 🛏️",
+        a2: "Kick you ",
+        r1: "Heheeee ik u sacrifice anything for me 😘",
+        r2: "I’ll take any chance to kick u 🤭"
+      },
+      {
+        q: "Would you rather lose the ability to say 'I love you' ❤️ or lose the ability to laugh together 😂?",
+        a1: "I love you 💕",
+        a2: "Laugh together 😆",
+        r1: "Without saying it itself, we both can feel it 🥺",
+        r2: "Azhudine irupom apo 😭 paithyam "
+      },
+      {
+        q: "Would you rather have a 'rewind' button ⏪ for our relationship to re-do one mistake, or have a 'fast-forward' button ⏩ to instantly get through a tough period?",
+        a1: "Rewind ⏪",
+        a2: "Fast forward ⏩",
+        r1: "Ipo solu which mistake 😅",
+        r2: "Ya baby tht would work out for us 💖"
+      },
+      {
+        q: "Would you rather lose the memory of our first kiss 😘 or lose the memory of the first time you realized you were in love with me 💕?",
+        a1: "First kiss 😘",
+        a2: "Falling in love 💘",
+        r1: "I can replicate it for you always 😏",
+        r2: "Ayy adipennnn"
+      },
+      {
+        q: "Would you rather introduce me to everyone as your 'bestie'  for a year, or have to call me 'my bubukutty' in public for a year?",
+        a1: "Bestie ",
+        a2: "Bubukutty ",
+        r1: "Nenachen ra bestie la nanu 🤨 podaa ",
+        r2: "Ashoo avlo dhairiyam irukaa unakuu nee apdi lam pana matiyee 🤭"
+      },
+      {
+        q: "Would you rather we swapped voices 🎤 for a day or swapped hairstyles 💇?",
+        a1: "Voice 🎤",
+        a2: "Hairstyle 💇",
+        r1: "Keech keech kural ",
+        r2: "Ull keep smelling my hair ikk 😍"
+      }
+    ];
+
+    let current = 0;
+    function loadQuestion() {
+      let q = questions[current];
+      document.getElementById("question").innerText = q.q;
+      document.getElementById("btn1").innerText = q.a1;
+      document.getElementById("btn2").innerText = q.a2;
+      document.getElementById("response").innerText = "";
+      document.getElementById("btn1").style.display = "block";
+      document.getElementById("btn2").style.display = "block";
+      let nextBtn = document.getElementById("nextBtn");
+      if (nextBtn) nextBtn.remove(); // remove Next if leftover
+    }
+
+    function choose(option) {
+      let q = questions[current];
+      let response = option === 1 ? q.r1 : q.r2;
+      document.getElementById("response").innerText = response;
+
+      // hide option buttons
+      document.getElementById("btn1").style.display = "none";
+      document.getElementById("btn2").style.display = "none";
+
+      // create Next button styled same as option buttons
+      let nextBtn = document.createElement("button");
+      nextBtn.innerText = "Next ➡️";
+      nextBtn.id = "nextBtn";
+      styleButton(nextBtn);
+
+      nextBtn.onclick = () => {
+        current++;
+        if (current < questions.length) {
+          loadQuestion();
+        } else {
+          document.querySelector(".card").innerHTML =
+            "<h2>No matter what you choose... 💖</h2><p>I’d always choose YOU ❤️</p>";
+
+          // add End button
+          let endBtn = document.createElement("button");
+          endBtn.innerText = "End 💌";
+          styleButton(endBtn);
+          endBtn.onclick = () => {
+            window.location.href = "https://444you.my.canva.site/";
+          };
+          document.querySelector(".card").appendChild(endBtn);
+        }
+      };
+      document.querySelector(".card").appendChild(nextBtn);
+    }
+
+    function styleButton(btn) {
+      btn.style.background = "#ec4899";
+      btn.style.color = "white";
+      btn.style.border = "none";
+      btn.style.borderRadius = "12px";
+      btn.style.padding = "14px 20px";
+      btn.style.marginTop = "15px";
+      btn.style.fontSize = "1rem";
+      btn.style.width = "100%";
+      btn.style.cursor = "pointer";
+      btn.onmouseover = () => { btn.style.background = "#db2777"; };
+      btn.onmouseout = () => { btn.style.background = "#ec4899"; };
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
